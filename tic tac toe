@@ -1,0 +1,314 @@
+import java.util.Scanner;
+public class TicTacToe{
+    public static void main (String[] args){
+        int row = 4; // 4 by 4 tic tac toe
+        int column = 4;
+        String[][] board = new String[row][column]; //sets up the 2d array board
+        checkwin win = new checkwin();
+        int playerrow = 0; //initialization for all variables
+        int playercolumn = 0; //variables are separated to column and rows 
+        int playeronecolumn = 0;
+        int playeronerow = 0;
+        int playertwocolumn = 0;
+        int playertworow = 0;
+        int comprow = 0;
+        int compcolumn = 0;
+        int turn = 0; //checks turns
+        String check = checkwin.checkWinner(board); //sets variable check to the checkWinner method 
+        for(int i=0; i<=3; i++){ //makes all empty spaces to "-"
+        	for(int f=0; f<=3; f++){
+        		board[i][f] = "-";
+        	}
+        }
+        displayboard Board = new displayboard(); //shows latest board 
+		Scanner console = new Scanner(System.in);
+        System.out.println("Would you like to play one player or two player or see how to play?"); //selection between one player and two player
+        String answer = console.nextLine().toLowerCase();
+        if(answer.equals("how to play")||(answer.equals("how")||(answer.equals("howtoplay")))){
+        	System.out.println("This game is just like a standard 3x3 tic tac toe game, but with a small twist. \nThe win condition stays the same (get 3 in a row) while the board is 4 by 4.");
+            System.out.println("Would you like to play one player or two player?"); //selection between one player and two player
+            answer = console.nextLine().toLowerCase();
+        }
+        Board.display(board); //display board
+        if(answer.equals("one player")||(answer.equals("oneplayer")||(answer.equals("one")))){ //oneplayer
+			while(check == null){ //repeats until the game is finished
+	            System.out.println("Select column number to put your x mark");
+	            playercolumn = console.nextInt();
+	            System.out.println("Select row number to put your x mark");
+	            playerrow = console.nextInt();
+	            while(board[playerrow][playercolumn] != "-"){ //checks if there's a marker already placed in that spot
+	            	System.out.println("Can't be placed there... choose another");
+	            	System.out.println("Select column number to put your x mark");
+		            playercolumn = console.nextInt();
+		            System.out.println("Select row number to put your x mark");
+		            playerrow = console.nextInt();
+	            }
+	            check = checkwin.checkWinner(board); //updates the variable check
+	            board[playerrow][playercolumn] = "x";
+	            Board.display(board); //adds x mark to the board in the specific coordinate
+	            compcolumn = (int)(Math.random()*3); //random number between 0-3 for column
+	            comprow = (int)(Math.random()*3); // random number between 0-3 for row
+	          
+	            while(board[comprow][compcolumn] != "-"){ //checks if there's a marker already placed in the spot
+	            	compcolumn = (int)(Math.random()*3);
+		            comprow = (int)(Math.random()*3);
+	            }
+	            board[comprow][compcolumn] = "o"; //places marker o
+	            Board.display(board); //displays board
+	            check = checkwin.checkWinner(board); //checks if comp won or not
+	            turn++; //adds 1 to the turn counter
+	            if (check=="X"){ //checks if player won
+					System.out.println("Player wins!");
+					System.out.println("Would you like to play again?"); //ask to play again
+					Scanner consolex = new Scanner(System.in);
+					String playagain = consolex.nextLine().toLowerCase();
+					if(playagain.equals("yes")){ //resets board
+						for(int i=0; i<=3; i++){	
+							for(int j=0; j<=3; j++){
+								board[i][j] = "-";
+								check = null;
+								Board.display(board);
+							}
+						}
+					}else{
+						break;
+					}
+				} 
+	            if (check == "O"){ //checks if computer won
+					System.out.println("Computer wins!");
+					System.out.println("Would you like to play again?");
+					Scanner consolea = new Scanner(System.in);
+					String playagain = consolea.nextLine().toLowerCase();
+					if(playagain.equals("yes")){
+						for(int i=0; i<=3; i++){
+							for(int j=0; j<=3; j++){
+								board[i][j] = "-"; //resets board
+								check = null;
+								Board.display(board);
+							}
+						}
+					}else{
+		            	break;
+					}
+				}
+	            if(turn==7){ //end of turn 7 all markers are placed and thus is a tie
+	            	System.out.println("TIE!");
+	            	System.out.println("Would you like to play again?");
+	            	Scanner consoley = new Scanner(System.in);
+					String playagain = consoley.nextLine().toLowerCase();
+					if(playagain.equals("yes")){
+						for(int i=0; i<=3; i++){
+							for(int j=0; j<=3; j++){
+								board[i][j] = "-";
+								check = null;
+								Board.display(board);
+							}
+						}
+					}else{
+		            	break;
+					}
+	            }
+	           
+	          }//while
+			System.out.println("Thanks for playing!");	
+				
+        	} else if(answer.equals("two player")||(answer.equals("twoplayer")||(answer.equals("two")))){ 
+              while(check == null){
+	            System.out.println("Player 1, Select column number to put your x mark"); //sets coordinates
+	            playeronecolumn = console.nextInt();
+	            System.out.println("Player 1, Select row number to put your x mark");
+	            playeronerow = console.nextInt();
+	            while(board[playeronerow][playeronecolumn] != "-"){ //checks if a mark is already placed
+	            	System.out.println("Can't be placed there... choose another");
+	            	System.out.println("Select column number to put your x mark");
+		            playeronecolumn = console.nextInt();
+		            System.out.println("Select row number to put your x mark");
+		            playeronerow = console.nextInt();
+	            }
+	            check = checkwin.checkWinner(board); //updates variable check
+	            board[playeronerow][playeronecolumn] = "x";
+	            Board.display(board);
+	            System.out.println("Player 2, Select column number to put your o mark"); //selects player two marker
+	            playertwocolumn = console.nextInt();
+	            System.out.println("Player 2, Select row number to put your o mark");
+	            playertworow = console.nextInt();
+	            while(board[playertworow][playertwocolumn] != "-"){
+	            	System.out.println("Can't be placed there... choose another");
+	            	System.out.println("Select column number to put your o mark");
+		            playertwocolumn = console.nextInt();
+		            System.out.println("Select row number to put your o mark");
+		            playertworow = console.nextInt();
+	            }
+	            board[playertworow][playertwocolumn] = "o"; //places o marker on the board
+	            Board.display(board);
+	            check = checkwin.checkWinner(board);
+	            turn++;
+	            if(turn==7){ //if end of 7th turn there is no winner, goes to tie
+	            	System.out.println("TIE!");
+	            	Scanner consoleb = new Scanner(System.in);
+					String playagain = consoleb.nextLine().toLowerCase();
+					if(playagain.equals("yes")){ //resets board
+						for(int i=0; i<=3; i++){
+							for(int j=0; j<=3; j++){
+								board[i][j] = "-";
+								check = null;
+								Board.display(board);
+							}
+						}
+					}else{
+		            	break;
+					}
+	            }
+	            if (check=="X"){ 
+					System.out.println("Player 1 wins!");
+					System.out.println("Would you like to play again?");
+					Scanner consolec = new Scanner(System.in);
+					String playagain = consolec.nextLine().toLowerCase();
+					if(playagain.equals("yes")){
+						for(int i=0; i<=3; i++){	//resets board
+							for(int j=0; j<=3; j++){
+								board[i][j] = "-";
+								check = null;
+								Board.display(board);
+							}
+						}
+					}else{
+						break;
+					}
+				} else if (check == "O"){
+					System.out.println("Player 2 wins!");
+					System.out.println("Would you like to play again?");
+					Scanner consoled = new Scanner(System.in);
+					String playagain = consoled.nextLine().toLowerCase();
+					if(playagain.equals("yes")){ //resets board
+						for(int i=0; i<=3; i++){
+							for(int j=0; j<=3; j++){
+								board[i][j] = "-";
+								check = null;
+								Board.display(board);
+							}
+						}
+					}else{
+		            	break;
+					}
+				}
+	          }//while
+              System.out.println("Thanks for playing!");	
+
+        }
+    
+    }
+}
+
+public class checkwin {
+
+	static String checkWinner(String[][] board) { 
+		for (int a = 0; a < 25; a++) { //for loop to cover all 25 cses
+			String line = null; //start the string line as null
+			switch (a) { //lists of cases that make 3 in a row
+			case 0:
+				line = board[0][0] + board[0][1] + board[0][2];
+				break;
+			case 1:
+				line = board[0][1] + board[0][2] + board[0][3];
+				break;
+			case 2:
+				line = board[1][0] + board[1][1] + board[1][2];
+				break;
+			case 3:
+				line = board[1][1] + board[1][2] + board[1][3];
+				break;
+			case 4:
+				line = board[2][0] + board[2][1] + board[2][2];
+				break;
+			case 5:
+				line = board[2][1] + board[2][2] + board[2][3];
+				break;
+			case 6:
+				line = board[3][0] + board[3][1] + board[3][2];
+				break;
+			case 7:
+				line = board[3][1] + board[3][2] + board[3][3];
+				break;
+			case 8:
+				line = board[0][0] + board[1][0] + board[2][0];
+				break;
+			case 9:
+				line = board[1][0] + board[2][0] + board[3][0];
+				break;
+			case 10:
+				line = board[0][1] + board[1][1] + board[2][1];
+				break;
+			case 11:
+				line = board[1][1] + board[2][1] + board[3][1];
+				break;
+			case 12:
+				line = board[0][2] + board[1][2] + board[2][2];
+				break;
+			case 13:
+				line = board[1][2] + board[2][2] + board[3][2];
+				break;
+			case 14:
+				line = board[0][3] + board[1][3] + board[2][3];
+				break;
+			case 15:
+				line = board[1][3] + board[2][3] + board[3][3];
+				break;
+			case 16:
+				line = board[0][0] + board[1][1] + board[2][2];
+				break;
+			case 17:
+				line = board[1][1] + board[2][2] + board[3][3];
+				break;
+			case 18:
+				line = board[1][0] + board[2][1] + board[3][2];
+				break;
+			case 19:
+				line = board[0][1] + board[1][2] + board[2][3];
+				break;
+			case 20:
+				line = board[0][3] + board[1][2] + board[2][1];
+				break;
+			case 21:
+				line = board[1][2] + board[2][1] + board[3][0];
+				break;
+			case 22:
+				line = board[0][1] + board[1][2] + board[2][3];
+				break;
+			case 23:
+				line = board[0][2] + board[1][1] + board[2][0];
+				break;
+			case 24:
+				line = board[1][3] + board[2][2] + board[3][1];
+				break;
+			}
+			if (line.equals("xxx")) { //if there is 3x in a row return X
+				return "X";
+			} else if (line.equals("ooo")) { //if there is 3o in a row return O
+				return "O";
+			}
+		}
+		return null; //return null if none of the cases are xxx or ooo
+	}
+
+}
+public class displayboard{
+	
+    public void display(String[][] grid){	
+   
+		System.out.print("R\\C "); 
+		for(int i=0; i<4; i++){ //labels the column numbers
+		    System.out.print("( "+i+" )");	
+	        }
+		System.out.println(); //next row
+		for (int i=0; i<grid.length; i++){ //
+		    System.out.print("("+i+") "); //labels the row numbers
+		    for (int j=0; j<grid[i].length; j++){
+			 System.out.print("  "+grid[i][j]+"  "); //fills up each row with 0
+			}	
+	            System.out.println();
+		    }
+
+      }
+}
+
